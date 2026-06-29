@@ -2,7 +2,6 @@ import os
 import json
 import shutil
 import argparse
-from PIL import Image  # Nếu không có PIL, bạn có thể comment hoặc cài pip install Pillow
 
 # ---------- Đọc dữ liệu ----------
 with open('data.json', 'r', encoding='utf-8') as f:
@@ -10,7 +9,7 @@ with open('data.json', 'r', encoding='utf-8') as f:
 
 os.makedirs('novel', exist_ok=True)
 
-# ---------- Các template ----------
+# ---------- Template ----------
 INFO_TEMPLATE = '''<!DOCTYPE html>
 <html lang="vi">
 <head>
@@ -401,6 +400,8 @@ READ_TEMPLATE = '''<!DOCTYPE html>
         let currentChap = parseInt(urlParams.get('chap')) || 1;
         let configData = null;
         let totalChapters = 0;
+        let chaptersData = null;
+
         const contentDiv = document.getElementById('chapter-content');
         const titleEl = document.getElementById('chapter-title');
         const prevBtn = document.getElementById('prev-btn');
@@ -409,27 +410,41 @@ READ_TEMPLATE = '''<!DOCTYPE html>
         const overlay = document.getElementById('lock-overlay');
         const affLink = document.getElementById('aff-link');
 
-        function loadConfig() {
-            return fetch('config.json')
-                .then(res => { if (!res.ok) throw new Error('Không tải được config'); return res.json(); })
-                .then(data => { configData = data; totalChapters = data.totalChapters; })
-                .catch(err => { console.error('Lỗi config:', err); contentDiv.innerHTML = '<p style="color:red;">Không thể tải cấu hình truyện.</p>'; });
+        async function loadAll() {
+            try {
+                const [configRes, chaptersRes] = await Promise.all([
+                    fetch('config.json'),
+                    fetch('chapters.json')
+                ]);
+                if (!configRes.ok) throw new Error('Không tải được config');
+                if (!chaptersRes.ok) throw new Error('Không tải được chapters.json');
+                configData = await configRes.json();
+                chaptersData = await chaptersRes.json();
+                totalChapters = configData.totalChapters;
+                loadChapter(currentChap);
+            } catch (err) {
+                console.error('Lỗi tải dữ liệu:', err);
+                contentDiv.innerHTML = '<p style="color:red;">Không thể tải nội dung truyện.</p>';
+            }
         }
 
         function loadChapter(chap) {
             if (chap < 1) chap = 1;
             if (chap > totalChapters) chap = totalChapters;
             currentChap = chap;
+
             const newUrl = window.location.pathname + '?chap=' + chap;
             window.history.pushState({ path: newUrl }, '', newUrl);
+
             titleEl.textContent = `Chương ${chap}`;
             chapInfo.textContent = `${chap} / ${totalChapters}`;
             prevBtn.disabled = (chap === 1);
             nextBtn.disabled = (chap === totalChapters);
-            fetch(`chapter${chap}.html`)
-                .then(res => { if (!res.ok) throw new Error('Không tìm thấy chapter'); return res.text(); })
-                .then(html => { contentDiv.innerHTML = html; checkLock(chap); })
-                .catch(err => { contentDiv.innerHTML = `<p style="color:red;">Lỗi tải chương: ${err.message}</p>`; });
+
+            // Lấy nội dung từ chaptersData
+            const html = chaptersData.chapters[chap.toString()] || '<p>Chưa có nội dung.</p>';
+            contentDiv.innerHTML = html;
+            checkLock(chap);
         }
 
         function checkLock(chap) {
@@ -437,37 +452,37 @@ READ_TEMPLATE = '''<!DOCTYPE html>
             const chapterConfig = configData.chapters[chap.toString()];
             const isLocked = chapterConfig && chapterConfig.locked === true;
             const aff = chapterConfig ? chapterConfig.aff_link : '';
-            if (isLocked && aff) { affLink.href = aff; overlay.classList.add('show'); }
-            else { overlay.classList.remove('show'); }
+            if (isLocked && aff) {
+                affLink.href = aff;
+                overlay.classList.add('show');
+            } else {
+                overlay.classList.remove('show');
+            }
         }
 
         function unlock() { overlay.classList.remove('show'); }
         affLink.addEventListener('click', unlock);
-        prevBtn.addEventListener('click', function() { if (currentChap > 1) loadChapter(currentChap - 1); });
-        nextBtn.addEventListener('click', function() { if (currentChap < totalChapters) loadChapter(currentChap + 1); });
+
+        prevBtn.addEventListener('click', function() {
+            if (currentChap > 1) loadChapter(currentChap - 1);
+        });
+        nextBtn.addEventListener('click', function() {
+            if (currentChap < totalChapters) loadChapter(currentChap + 1);
+        });
+
         window.addEventListener('popstate', function(e) {
             const chap = new URLSearchParams(window.location.search).get('chap');
-            if (chap) loadChapter(parseInt(chap)); else loadChapter(1);
+            if (chap) loadChapter(parseInt(chap));
+            else loadChapter(1);
         });
-        loadConfig().then(() => { if (configData) loadChapter(currentChap); });
+
+        loadAll();
     </script>
 </body>
 </html>'''
 
-CHAPTER_TEMPLATE = '''<script>
-    (function() {{
-        if (window.top === window.self) {{
-            var chap = window.location.pathname.match(/chapter(\\d+)\\.html/);
-            if (chap) window.location.href = 'info.html?chap=' + chap[1];
-            else window.location.href = 'info.html';
-        }}
-    }})();
-</script>
-<h2>Chương {chap_num}</h2>
-<p>Nội dung chương {chap_num} sẽ được thêm vào đây.</p>'''
-
 # ---------- Xử lý tham số dòng lệnh ----------
-parser = argparse.ArgumentParser(description='Tạo thư mục truyện từ data.json')
+parser = argparse.ArgumentParser(description='Tạo thư mục truyện từ data.json (dùng chapters.json)')
 parser.add_argument('--full', action='store_true', help='Chạy full: tạo lại tất cả (có xác nhận)')
 args = parser.parse_args()
 
@@ -518,7 +533,7 @@ for slug in process_slugs:
     folder = os.path.join('novel', slug)
     os.makedirs(folder, exist_ok=True)
 
-    # Config
+    # 1. Config
     config_path = os.path.join(folder, 'config.json')
     if not os.path.exists(config_path) or args.full:
         config = {
@@ -533,33 +548,35 @@ for slug in process_slugs:
         with open(config_path, 'w', encoding='utf-8') as f:
             json.dump(config, f, ensure_ascii=False, indent=2)
 
-    # info.html
+    # 2. chapters.json (nội dung tất cả chương)
+    chapters_path = os.path.join(folder, 'chapters.json')
+    if not os.path.exists(chapters_path) or args.full:
+        chapters_data = {"total": total_chaps, "chapters": {}}
+        for i in range(1, total_chaps+1):
+            content = f"<h2>Chương {i}</h2><p>Nội dung chương {i} sẽ được thêm vào đây.</p>"
+            chapters_data["chapters"][str(i)] = content
+        with open(chapters_path, 'w', encoding='utf-8') as f:
+            json.dump(chapters_data, f, ensure_ascii=False, indent=2)
+
+    # 3. info.html
     info_path = os.path.join(folder, 'info.html')
     if not os.path.exists(info_path) or args.full:
         with open(info_path, 'w', encoding='utf-8') as f:
             f.write(INFO_TEMPLATE)
 
-    # read.html
+    # 4. read.html
     read_path = os.path.join(folder, 'read.html')
     if not os.path.exists(read_path) or args.full:
         with open(read_path, 'w', encoding='utf-8') as f:
             f.write(READ_TEMPLATE)
 
-    # chapter files
-    for i in range(1, total_chaps+1):
-        chap_file = os.path.join(folder, f'chapter{i}.html')
-        if not os.path.exists(chap_file) or args.full:
-            chap_content = CHAPTER_TEMPLATE.format(chap_num=i)
-            with open(chap_file, 'w', encoding='utf-8') as f:
-                f.write(chap_content)
-
-    # ảnh bìa
+    # 5. Ảnh bìa
     create_default_cover(folder)
 
     print(f'✅ Đã xử lý xong: {slug} (tổng {total_chaps} chương)')
 
 print('🎉 Hoàn thành!')
 
-
-# ---------- Run full: python generate_stories.py --full ----------
-# ---------- Run new : python generate_stories.py        ----------
+# ---------- Cách chạy ----------
+# Chạy bình thường: python generate_stories.py
+# Chạy full:      python generate_stories.py --full
