@@ -1,4 +1,4 @@
-// js/main.js
+// js/main.js - toàn bộ file đã cập nhật
 
 // Biến toàn cục
 let allTruyen = [];
@@ -16,7 +16,6 @@ document.addEventListener('DOMContentLoaded', function() {
     loadData();
     setupSearchAndFilter();
     setupHamburger();
-    // KHÔNG gọi setupGenreDropdown() ở đây nữa
 });
 
 // ---------- Hàm loại bỏ dấu tiếng Việt ----------
@@ -68,7 +67,6 @@ function loadData() {
                 allTruyen = data.truyen;
                 filteredTruyen = allTruyen;
                 renderAll();
-                // Gọi setupGenreDropdown sau khi có dữ liệu
                 setupGenreDropdown();
             } else {
                 throw new Error('Dữ liệu rỗng');
@@ -113,6 +111,9 @@ function renderSection(containerId, items, displayCount, sectionKey) {
     const show = Math.min(displayCount, total);
     const visibleItems = items.slice(0, show);
 
+    // Ảnh mặc định chung cho tất cả fallback (chỉ một request duy nhất)
+    const defaultCover = 'images/default.jpg';
+
     let html = '';
     visibleItems.forEach(item => {
         const coverUrl = `novel/${item.slug}/${item.cover || 'cover.jpg'}`;
@@ -120,7 +121,8 @@ function renderSection(containerId, items, displayCount, sectionKey) {
         html += `
             <div class="story-card">
                 <a href="${link}">
-                    <img class="cover" src="${coverUrl}" alt="${item.title}" loading="lazy" width="220" height="280" onerror="this.src='novel/${item.slug}/cover.jpg'">
+                    <img class="cover" src="${coverUrl}" alt="${item.title}" loading="lazy" width="220" height="280" 
+                         onerror="this.src='${defaultCover}'; this.onerror=null;">
                     <div class="info">
                         <div class="title">${item.title}</div>
                         <div class="meta">
@@ -187,19 +189,15 @@ function setupGenreDropdown() {
     const dropdown = document.getElementById('genre-dropdown');
     if (!dropdown) return;
 
-    // Lấy danh sách genre duy nhất, lọc bỏ các giá trị rỗng/null/undefined
     const genres = [...new Set(allTruyen.map(item => item.genre).filter(Boolean))];
-    // Sắp xếp theo thứ tự chữ cái
     genres.sort((a, b) => a.localeCompare(b, 'vi'));
 
-    // Xây dựng dropdown
     let html = `<li><a href="#" data-genre="all">📚 Tất cả</a></li>`;
     genres.forEach(g => {
         html += `<li><a href="#" data-genre="${g}">${g}</a></li>`;
     });
     dropdown.innerHTML = html;
 
-    // Sự kiện click
     dropdown.querySelectorAll('a[data-genre]').forEach(link => {
         link.addEventListener('click', function(e) {
             e.preventDefault();
@@ -218,7 +216,6 @@ function setupGenreDropdown() {
             currentDisplay = { hot: 8, new: 8, updated: 8 };
             renderAll();
 
-            // Đóng dropdown trên mobile
             if (window.innerWidth <= 768) {
                 const parent = this.closest('.dropdown');
                 if (parent) parent.classList.remove('open');
