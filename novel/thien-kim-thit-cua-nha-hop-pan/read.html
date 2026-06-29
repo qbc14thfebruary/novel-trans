@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>Đọc truyện</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <style>
+        .reader-container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #fff;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: relative;
+        }
+        .chapter-nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 20px 0;
+        }
+        .chapter-nav button {
+            padding: 10px 25px;
+            border: none;
+            background: #3498db;
+            color: #fff;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: background 0.2s;
+        }
+        .chapter-nav button:hover:not(:disabled) {
+            background: #2980b9;
+        }
+        .chapter-nav button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        .chapter-title {
+            font-size: 1.8rem;
+            text-align: center;
+            margin: 10px 0 20px;
+        }
+        #chapter-content {
+            min-height: 300px;
+            padding: 10px 0;
+            line-height: 1.8;
+            font-size: 1.1rem;
+        }
+        #lock-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.85);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            flex-direction: column;
+            color: white;
+            text-align: center;
+        }
+        #lock-overlay.show {
+            display: flex;
+        }
+        #lock-overlay h2 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+        }
+        #lock-overlay p {
+            font-size: 1.2rem;
+            margin-bottom: 30px;
+        }
+        .btn-aff {
+            display: inline-block;
+            background: #e67e22;
+            color: #fff;
+            padding: 15px 40px;
+            border-radius: 50px;
+            font-size: 1.3rem;
+            font-weight: bold;
+            text-decoration: none;
+            transition: background 0.2s;
+        }
+        .btn-aff:hover {
+            background: #d35400;
+        }
+        @media (max-width: 600px) {
+            .reader-container { padding: 15px; }
+            .chapter-title { font-size: 1.4rem; }
+            #chapter-content { font-size: 1rem; }
+            .chapter-nav button { padding: 8px 15px; font-size: 0.9rem; }
+        }
+        .back-info {
+            display: inline-block;
+            margin-bottom: 15px;
+            color: #3498db;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        .back-info:hover { text-decoration: underline; }
+    </style>
+</head>
+<body>
+    <div class="container reader-container">
+        <a href="info.html" class="back-info">⬅ Quay lại thông tin truyện</a>
+        <h1 class="chapter-title" id="chapter-title">Chương 1</h1>
+        <div id="chapter-content">
+            <p>Đang tải nội dung...</p>
+        </div>
+        <div class="chapter-nav">
+            <button id="prev-btn" disabled>⬅ Prev</button>
+            <span id="chap-info">1 / 13</span>
+            <button id="next-btn">Next ➡</button>
+        </div>
+    </div>
+    <div id="lock-overlay">
+        <h2>🔒 Truyện đã bị khóa</h2>
+        <p>Nhấn nút bên dưới để mở khóa và đọc tiếp</p>
+        <a href="#" id="aff-link" class="btn-aff" target="_blank">👉 Mở khóa ngay</a>
+    </div>
+    <script>
+        const urlParams = new URLSearchParams(window.location.search);
+        let currentChap = parseInt(urlParams.get('chap')) || 1;
+        let configData = null;
+        let totalChapters = 0;
+        const contentDiv = document.getElementById('chapter-content');
+        const titleEl = document.getElementById('chapter-title');
+        const prevBtn = document.getElementById('prev-btn');
+        const nextBtn = document.getElementById('next-btn');
+        const chapInfo = document.getElementById('chap-info');
+        const overlay = document.getElementById('lock-overlay');
+        const affLink = document.getElementById('aff-link');
+
+        function loadConfig() {
+            return fetch('config.json')
+                .then(res => { if (!res.ok) throw new Error('Không tải được config'); return res.json(); })
+                .then(data => { configData = data; totalChapters = data.totalChapters; })
+                .catch(err => { console.error('Lỗi config:', err); contentDiv.innerHTML = '<p style="color:red;">Không thể tải cấu hình truyện.</p>'; });
+        }
+
+        function loadChapter(chap) {
+            if (chap < 1) chap = 1;
+            if (chap > totalChapters) chap = totalChapters;
+            currentChap = chap;
+            const newUrl = window.location.pathname + '?chap=' + chap;
+            window.history.pushState({ path: newUrl }, '', newUrl);
+            titleEl.textContent = `Chương ${chap}`;
+            chapInfo.textContent = `${chap} / ${totalChapters}`;
+            prevBtn.disabled = (chap === 1);
+            nextBtn.disabled = (chap === totalChapters);
+            fetch(`chapter${chap}.html`)
+                .then(res => { if (!res.ok) throw new Error('Không tìm thấy chapter'); return res.text(); })
+                .then(html => { contentDiv.innerHTML = html; checkLock(chap); })
+                .catch(err => { contentDiv.innerHTML = `<p style="color:red;">Lỗi tải chương: ${err.message}</p>`; });
+        }
+
+        function checkLock(chap) {
+            if (!configData) return;
+            const chapterConfig = configData.chapters[chap.toString()];
+            const isLocked = chapterConfig && chapterConfig.locked === true;
+            const aff = chapterConfig ? chapterConfig.aff_link : '';
+            if (isLocked && aff) { affLink.href = aff; overlay.classList.add('show'); }
+            else { overlay.classList.remove('show'); }
+        }
+
+        function unlock() { overlay.classList.remove('show'); }
+        affLink.addEventListener('click', unlock);
+        prevBtn.addEventListener('click', function() { if (currentChap > 1) loadChapter(currentChap - 1); });
+        nextBtn.addEventListener('click', function() { if (currentChap < totalChapters) loadChapter(currentChap + 1); });
+        window.addEventListener('popstate', function(e) {
+            const chap = new URLSearchParams(window.location.search).get('chap');
+            if (chap) loadChapter(parseInt(chap)); else loadChapter(1);
+        });
+        loadConfig().then(() => { if (configData) loadChapter(currentChap); });
+    </script>
+</body>
+</html>

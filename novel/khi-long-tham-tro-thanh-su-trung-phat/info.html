@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title id="story-title">Thông tin truyện</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <style>
+        .story-info-container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #fff;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .story-info-header {
+            display: flex;
+            gap: 30px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+        .story-info-header .cover {
+            width: 200px;
+            height: 260px;
+            object-fit: cover;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+            flex-shrink: 0;
+            background: #eee;
+        }
+        .story-info-header .details {
+            flex: 1;
+            min-width: 250px;
+        }
+        .story-info-header .details h1 {
+            font-size: 2rem;
+            color: #2c3e50;
+            margin-bottom: 15px;
+        }
+        .story-info-header .details .meta-item {
+            margin-bottom: 8px;
+            font-size: 1rem;
+            color: #555;
+        }
+        .story-info-header .details .meta-item strong {
+            color: #2c3e50;
+            min-width: 80px;
+            display: inline-block;
+        }
+        .story-description {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+            line-height: 1.8;
+            border-left: 4px solid #e67e22;
+        }
+        .chapter-list {
+            margin-top: 30px;
+        }
+        .chapter-list h3 {
+            font-size: 1.3rem;
+            border-bottom: 2px solid #ecf0f1;
+            padding-bottom: 10px;
+            margin-bottom: 15px;
+            color: #2c3e50;
+        }
+        .chapter-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            gap: 10px;
+        }
+        .chapter-grid a {
+            display: block;
+            padding: 10px 15px;
+            background: #f8f9fa;
+            border-radius: 5px;
+            text-decoration: none;
+            color: #2c3e50;
+            transition: all 0.25s ease;
+            text-align: center;
+            font-size: 0.95rem;
+            border: 1px solid #e9ecef;
+            position: relative;
+        }
+        .chapter-grid a:hover {
+            background: #e67e22;
+            color: #fff;
+            transform: translateY(-3px);
+            box-shadow: 0 6px 16px rgba(230, 126, 34, 0.3);
+            border-color: #e67e22;
+        }
+        .chapter-grid a.locked {
+            background: #fef9e7;
+            border-color: #f39c12;
+        }
+        .chapter-grid a.locked:hover {
+            background: #f39c12;
+            color: #fff;
+            border-color: #f39c12;
+            box-shadow: 0 6px 16px rgba(243, 156, 18, 0.4);
+        }
+        .chapter-grid a.locked::after {
+            content: " 🔒";
+            font-size: 0.75rem;
+            opacity: 0.7;
+        }
+        .pagination {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+        .pagination button {
+            padding: 8px 20px;
+            border: 1px solid #ddd;
+            background: #fff;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .pagination button:hover:not(:disabled) {
+            background: #3498db;
+            color: #fff;
+            border-color: #3498db;
+        }
+        .pagination button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        .pagination .page-info {
+            padding: 8px 15px;
+            background: #ecf0f1;
+            border-radius: 5px;
+            color: #2c3e50;
+        }
+        .back-home {
+            display: inline-block;
+            margin-bottom: 20px;
+            color: #3498db;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        .back-home:hover {
+            text-decoration: underline;
+        }
+        @media (max-width: 600px) {
+            .story-info-header {
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+            }
+            .story-info-header .cover {
+                width: 160px;
+                height: 210px;
+            }
+            .story-info-header .details h1 {
+                font-size: 1.5rem;
+            }
+            .story-info-header .details .meta-item strong {
+                min-width: 60px;
+            }
+            .chapter-grid {
+                grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container story-info-container">
+        <a href="../../index.html" class="back-home">⬅ Quay lại trang chủ</a>
+        <div id="story-content">
+            <p>Đang tải thông tin...</p>
+        </div>
+    </div>
+    <script>
+        const pathParts = window.location.pathname.split('/');
+        const slug = pathParts[pathParts.length - 2] || '';
+        let storyData = null;
+        let configData = null;
+        let currentPage = 1;
+        const ITEMS_PER_PAGE = 20;
+        const contentDiv = document.getElementById('story-content');
+
+        async function loadData() {
+            try {
+                const configRes = await fetch('config.json');
+                if (configRes.ok) configData = await configRes.json();
+                const dataRes = await fetch('../../data.json');
+                if (!dataRes.ok) throw new Error('Không tải được data.json');
+                const data = await dataRes.json();
+                storyData = data.truyen.find(item => item.slug === slug);
+                if (!storyData) {
+                    contentDiv.innerHTML = '<p style="color:red;">Không tìm thấy thông tin truyện.</p>';
+                    return;
+                }
+                renderStory();
+            } catch (error) {
+                console.error('Lỗi:', error);
+                contentDiv.innerHTML = '<p style="color:red;">Không thể tải thông tin truyện.</p>';
+            }
+        }
+
+        function renderStory() {
+            const { title, cover, author, genre, status, description, chapters, views } = storyData;
+            document.getElementById('story-title').textContent = title;
+            const coverPath = cover ? `./${cover}` : './cover.jpg';
+            let html = `
+                <div class="story-info-header">
+                    <img class="cover" src="${coverPath}" alt="${title}" onerror="this.src='./cover.jpg'">
+                    <div class="details">
+                        <h1>${title}</h1>
+                        <div class="meta-item"><strong>Tác giả:</strong> ${author || 'Đang cập nhật'}</div>
+                        <div class="meta-item"><strong>Thể loại:</strong> ${genre || 'Uncategorized'}</div>
+                        <div class="meta-item"><strong>Tình trạng:</strong> ${status || 'Đang ra'}</div>
+                        <div class="meta-item"><strong>Lượt xem:</strong> ${views ? views.toLocaleString() : 0}</div>
+                        <div class="meta-item"><strong>Số chương:</strong> ${chapters}</div>
+                    </div>
+                </div>
+            `;
+            if (description) html += `<div class="story-description">${description}</div>`;
+            html += `<div class="chapter-list"><h3>📖 DANH SÁCH CHƯƠNG</h3>`;
+            html += renderChapters(currentPage);
+            html += `</div>`;
+            contentDiv.innerHTML = html;
+        }
+
+        function renderChapters(page) {
+            const total = storyData.chapters;
+            const totalPages = Math.ceil(total / ITEMS_PER_PAGE);
+            const start = (page - 1) * ITEMS_PER_PAGE + 1;
+            const end = Math.min(page * ITEMS_PER_PAGE, total);
+            let html = `<div class="chapter-grid">`;
+            for (let i = start; i <= end; i++) {
+                const isLocked = configData && configData.chapters && configData.chapters[i] && configData.chapters[i].locked === true;
+                const lockedClass = isLocked ? 'locked' : '';
+                html += `<a href="read.html?chap=${i}" class="${lockedClass}">Chương ${i}</a>`;
+            }
+            html += `</div>`;
+            html += `<div class="pagination">`;
+            html += `<button onclick="goToPage(${page - 1})" ${page <= 1 ? 'disabled' : ''}>⬅ Trước</button>`;
+            html += `<span class="page-info">${page} / ${totalPages}</span>`;
+            html += `<button onclick="goToPage(${page + 1})" ${page >= totalPages ? 'disabled' : ''}>Sau ➡</button>`;
+            html += `</div>`;
+            return html;
+        }
+
+        function goToPage(page) {
+            const total = storyData.chapters;
+            const totalPages = Math.ceil(total / ITEMS_PER_PAGE);
+            if (page < 1 || page > totalPages) return;
+            currentPage = page;
+            renderStory();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        loadData();
+    </script>
+</body>
+</html>
