@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kho truyện - Đọc truyện online</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="header-top">
+                <h1>📚 KHO TRUYỆN</h1>
+                <p>Đọc truyện miễn phí, cập nhật liên tục</p>
+            </div>
+            <nav>
+                <!-- Hamburger button -->
+                <div class="hamburger" id="hamburger">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+
+                <!-- Menu chính -->
+                <ul class="nav-menu" id="nav-menu">
+                    <li><a href="index.html">TRANG CHỦ</a></li>
+                    <li class="dropdown">
+                        <a href="#">THỂ LOẠI ▼</a>
+                        <ul class="dropdown-content" id="genre-dropdown">
+                            <!-- JavaScript sẽ tạo động -->
+                        </ul>
+                    </li>
+                    <li><a href="#truyen-hot">TRUYỆN HOT</a></li>
+                    <li><a href="#truyen-moi">MỚI NHẤT</a></li>
+                    <li><a href="#">LIÊN HỆ</a></li>
+                </ul>
+
+                <!-- Ô tìm kiếm -->
+                <div class="search-box">
+                    <input type="text" id="search-input" placeholder="Tìm tên truyện...">
+                    <button id="search-btn">🔍</button>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container">
+        <section id="truyen-hot">
+            <h2>🔥 Truyện Hot Nhất</h2>
+            <div class="story-grid" id="hot-list">
+                <p>Đang tải...</p>
+            </div>
+        </section>
+
+        <section id="truyen-moi">
+            <h2>✨ Truyện Mới Ra Mắt</h2>
+            <div class="story-grid" id="new-list">
+                <p>Đang tải...</p>
+            </div>
+        </section>
+
+        <section id="truyen-cap-nhat">
+            <h2>🔄 Truyện Vừa Cập Nhật</h2>
+            <div class="story-grid" id="updated-list">
+                <p>Đang tải...</p>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 - Kho truyện. Mọi thắc mắc vui lòng <a href="#">liên hệ</a></p>
+        </div>
+    </footer>
+
+    <script src="js/main.js"></script>
+</body>
+</html>
