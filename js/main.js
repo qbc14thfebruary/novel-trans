@@ -19,6 +19,44 @@ document.addEventListener('DOMContentLoaded', function() {
     setupHamburger();
 });
 
+// ---------- Hàm loại bỏ dấu tiếng Việt ----------
+function removeVietnameseTones(str) {
+    if (!str) return '';
+    const map = {
+        'àáảãạâầấẩẫậăằắẳẵặ': 'a',
+        'èéẻẽẹêềếểễệ': 'e',
+        'ìíỉĩị': 'i',
+        'òóỏõọôồốổỗộơờớởỡợ': 'o',
+        'ùúủũụưừứửữự': 'u',
+        'ỳýỷỹỵ': 'y',
+        'đ': 'd'
+    };
+    let result = str.toLowerCase();
+    for (const [chars, replacement] of Object.entries(map)) {
+        for (const ch of chars) {
+            result = result.replaceAll(ch, replacement);
+        }
+    }
+    return result;
+}
+
+// ---------- Hàm kiểm tra match ----------
+function matchesSearch(item, keyword) {
+    if (!keyword) return true;
+    const normalizedKeyword = removeVietnameseTones(keyword).toLowerCase();
+    // Tìm trên các trường: id, title, slug, description
+    const searchFields = [
+        item.id || '',
+        item.title || '',
+        item.slug || '',
+        item.description || ''
+    ];
+    return searchFields.some(field => {
+        const normalizedField = removeVietnameseTones(field).toLowerCase();
+        return normalizedField.includes(normalizedKeyword);
+    });
+}
+
 // ---------- Tải dữ liệu ----------
 function loadData() {
     fetch('data.json')
@@ -36,16 +74,10 @@ function loadData() {
             }
         })
         .catch(error => {
-            console.warn('Không thể fetch data.json, thử dùng dữ liệu nhúng:', error);
-            if (typeof EMBEDDED_DATA !== 'undefined' && EMBEDDED_DATA.truyen) {
-                allTruyen = EMBEDDED_DATA.truyen;
-                filteredTruyen = allTruyen;
-                renderAll();
-            } else {
-                document.querySelectorAll('.story-grid').forEach(grid => {
-                    grid.innerHTML = `<p style="color:red; padding:20px;">Không thể tải danh sách truyện. Vui lòng thử lại sau.</p>`;
-                });
-            }
+            console.warn('Không thể fetch data.json:', error);
+            document.querySelectorAll('.story-grid').forEach(grid => {
+                grid.innerHTML = `<p style="color:red; padding:20px;">Không thể tải danh sách truyện. Vui lòng thử lại sau.</p>`;
+            });
         });
 }
 
@@ -131,14 +163,14 @@ function setupSearchAndFilter() {
     const searchBtn = document.getElementById('search-btn');
 
     function applyFilter() {
-        const keyword = searchInput.value.trim().toLowerCase();
+        const keyword = searchInput.value.trim();
         searchKeyword = keyword;
         const selectedGenre = currentGenre;
 
         filteredTruyen = allTruyen.filter(item => {
-            const matchTitle = item.title.toLowerCase().includes(keyword);
+            const matchSearch = matchesSearch(item, keyword);
             const matchGenre = (selectedGenre === 'all') || (item.genre === selectedGenre);
-            return matchTitle && matchGenre;
+            return matchSearch && matchGenre;
         });
 
         currentDisplay = { hot: 8, new: 8, updated: 8 };
@@ -168,13 +200,13 @@ function setupGenreDropdown() {
             const genre = this.dataset.genre;
             currentGenre = genre;
             const searchInput = document.getElementById('search-input');
-            const keyword = searchInput.value.trim().toLowerCase();
+            const keyword = searchInput.value.trim();
             searchKeyword = keyword;
 
             filteredTruyen = allTruyen.filter(item => {
-                const matchTitle = item.title.toLowerCase().includes(keyword);
+                const matchSearch = matchesSearch(item, keyword);
                 const matchGenre = (genre === 'all') || (item.genre === genre);
-                return matchTitle && matchGenre;
+                return matchSearch && matchGenre;
             });
 
             currentDisplay = { hot: 8, new: 8, updated: 8 };
