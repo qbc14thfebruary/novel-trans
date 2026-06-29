@@ -15,8 +15,8 @@ let searchKeyword = '';
 document.addEventListener('DOMContentLoaded', function() {
     loadData();
     setupSearchAndFilter();
-    setupGenreDropdown();
     setupHamburger();
+    // KHÔNG gọi setupGenreDropdown() ở đây nữa
 });
 
 // ---------- Hàm loại bỏ dấu tiếng Việt ----------
@@ -44,7 +44,6 @@ function removeVietnameseTones(str) {
 function matchesSearch(item, keyword) {
     if (!keyword) return true;
     const normalizedKeyword = removeVietnameseTones(keyword).toLowerCase();
-    // Tìm trên các trường: id, title, slug, description
     const searchFields = [
         item.id || '',
         item.title || '',
@@ -69,6 +68,8 @@ function loadData() {
                 allTruyen = data.truyen;
                 filteredTruyen = allTruyen;
                 renderAll();
+                // Gọi setupGenreDropdown sau khi có dữ liệu
+                setupGenreDropdown();
             } else {
                 throw new Error('Dữ liệu rỗng');
             }
@@ -186,14 +187,19 @@ function setupGenreDropdown() {
     const dropdown = document.getElementById('genre-dropdown');
     if (!dropdown) return;
 
+    // Lấy danh sách genre duy nhất, lọc bỏ các giá trị rỗng/null/undefined
     const genres = [...new Set(allTruyen.map(item => item.genre).filter(Boolean))];
-    dropdown.innerHTML = `<li><a href="#" data-genre="all">Tất cả</a></li>`;
-    genres.forEach(g => {
-        const li = document.createElement('li');
-        li.innerHTML = `<a href="#" data-genre="${g}">${g}</a>`;
-        dropdown.appendChild(li);
-    });
+    // Sắp xếp theo thứ tự chữ cái
+    genres.sort((a, b) => a.localeCompare(b, 'vi'));
 
+    // Xây dựng dropdown
+    let html = `<li><a href="#" data-genre="all">📚 Tất cả</a></li>`;
+    genres.forEach(g => {
+        html += `<li><a href="#" data-genre="${g}">${g}</a></li>`;
+    });
+    dropdown.innerHTML = html;
+
+    // Sự kiện click
     dropdown.querySelectorAll('a[data-genre]').forEach(link => {
         link.addEventListener('click', function(e) {
             e.preventDefault();
@@ -212,12 +218,15 @@ function setupGenreDropdown() {
             currentDisplay = { hot: 8, new: 8, updated: 8 };
             renderAll();
 
+            // Đóng dropdown trên mobile
             if (window.innerWidth <= 768) {
                 const parent = this.closest('.dropdown');
                 if (parent) parent.classList.remove('open');
             }
         });
     });
+
+    console.log(`✅ Đã tải ${genres.length} thể loại:`, genres);
 }
 
 // ---------- Hamburger menu ----------
