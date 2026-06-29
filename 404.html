@@ -42,7 +42,29 @@
     <div class="error-container">
         <h1>404</h1>
         <p>😢 Truyện bạn tìm không tồn tại hoặc đã bị xóa.</p>
-        <a href="https://qbc14thfebruary.github.io/novel-trans">Quay về trang chủ</a>
+        <a id="back-home-link" href="#">Quay về trang chủ</a>
     </div>
+    <script>
+        (function() {
+            // Lấy đường dẫn hiện tại
+            var path = window.location.pathname;
+            // Tách thành các phần
+            var parts = path.split('/');
+            // Tìm tên repository (phần thứ 2 trong URL nếu có)
+            // Nếu đang ở user page (username.github.io) thì parts sẽ chỉ có 1 phần
+            // Nếu đang ở project page (username.github.io/repo) thì parts[1] là tên repo
+            var base = '';
+            if (parts.length >= 2 && parts[1] !== '') {
+                // Project page: /repo/...
+                var repo = parts[1];
+                base = '/' + repo + '/';
+            } else {
+                // User page: /
+                base = '/';
+            }
+            // Gán href cho link
+            document.getElementById('back-home-link').href = base;
+        })();
+    </script>
 </body>
 </html>
