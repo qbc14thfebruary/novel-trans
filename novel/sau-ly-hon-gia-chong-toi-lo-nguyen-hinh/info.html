@@ -206,10 +206,11 @@
         function renderStory() {
             const { title, cover, author, genre, status, description, chapters, views } = storyData;
             document.getElementById('story-title').textContent = title;
+            // Ảnh cover: lấy từ folder truyện, fallback về ../images/default.jpg
             const coverPath = cover ? `./${cover}` : './cover.jpg';
             let html = `
                 <div class="story-info-header">
-                    <img class="cover" src="${coverPath}" alt="${title}" onerror="this.src='./cover.jpg'">
+                    <img class="cover" src="${coverPath}" alt="${title}" onerror="this.src='../images/default.jpg'; this.onerror=null;">
                     <div class="details">
                         <h1>${title}</h1>
                         <div class="meta-item"><strong>Tác giả:</strong> ${author || 'Đang cập nhật'}</div>
