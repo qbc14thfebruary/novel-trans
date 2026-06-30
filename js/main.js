@@ -1,4 +1,4 @@
-// js/main.js - toàn bộ file đã cập nhật
+// js/main.js
 
 // Biến toàn cục
 let allTruyen = [];
@@ -111,11 +111,12 @@ function renderSection(containerId, items, displayCount, sectionKey) {
     const show = Math.min(displayCount, total);
     const visibleItems = items.slice(0, show);
 
-    // Ảnh mặc định chung cho tất cả fallback (chỉ một request duy nhất)
+    // Ảnh mặc định chung
     const defaultCover = 'images/default.jpg';
 
     let html = '';
     visibleItems.forEach(item => {
+        // Ảnh cover: lấy từ thư mục truyện, fallback về images/default.jpg
         const coverUrl = `novel/${item.slug}/${item.cover || 'cover.jpg'}`;
         const link = `novel/${item.slug}/info.html`;
         html += `

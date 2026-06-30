@@ -4,26 +4,494 @@ import shutil
 import argparse
 from datetime import datetime
 
-# ---------- Hàm tạo stt tự động ----------
+# ---------- Đọc data.json ----------
+with open('data.json', 'r', encoding='utf-8') as f:
+    data = json.load(f)
+
+os.makedirs('novel', exist_ok=True)
+
+# ---------- Hàm tạo STT tự động ----------
 def get_next_stt(data):
-    """Tìm stt lớn nhất hiện có và trả về stt tiếp theo"""
     if not data['truyen']:
         return 1
     max_stt = max(item.get('stt', 0) for item in data['truyen'])
     return max_stt + 1
 
-# ---------- Đọc data.json ----------
-with open('data.json', 'r', encoding='utf-8') as f:
-    data = json.load(f)
+# ---------- Template ----------
+INFO_TEMPLATE = '''<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title id="story-title">Thông tin truyện</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <style>
+        .story-info-container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #fff;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .story-info-header {
+            display: flex;
+            gap: 30px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+        .story-info-header .cover {
+            width: 200px;
+            height: 260px;
+            object-fit: cover;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+            flex-shrink: 0;
+            background: #eee;
+        }
+        .story-info-header .details {
+            flex: 1;
+            min-width: 250px;
+        }
+        .story-info-header .details h1 {
+            font-size: 2rem;
+            color: #2c3e50;
+            margin-bottom: 15px;
+        }
+        .story-info-header .details .meta-item {
+            margin-bottom: 8px;
+            font-size: 1rem;
+            color: #555;
+        }
+        .story-info-header .details .meta-item strong {
+            color: #2c3e50;
+            min-width: 80px;
+            display: inline-block;
+        }
+        .story-description {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+            line-height: 1.8;
+            border-left: 4px solid #e67e22;
+        }
+        .chapter-list {
+            margin-top: 30px;
+        }
+        .chapter-list h3 {
+            font-size: 1.3rem;
+            border-bottom: 2px solid #ecf0f1;
+            padding-bottom: 10px;
+            margin-bottom: 15px;
+            color: #2c3e50;
+        }
+        .chapter-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            gap: 10px;
+        }
+        .chapter-grid a {
+            display: block;
+            padding: 10px 15px;
+            background: #f8f9fa;
+            border-radius: 5px;
+            text-decoration: none;
+            color: #2c3e50;
+            transition: all 0.25s ease;
+            text-align: center;
+            font-size: 0.95rem;
+            border: 1px solid #e9ecef;
+            position: relative;
+        }
+        .chapter-grid a:hover {
+            background: #e67e22;
+            color: #fff;
+            transform: translateY(-3px);
+            box-shadow: 0 6px 16px rgba(230, 126, 34, 0.3);
+            border-color: #e67e22;
+        }
+        .chapter-grid a.locked {
+            background: #fef9e7;
+            border-color: #f39c12;
+        }
+        .chapter-grid a.locked:hover {
+            background: #f39c12;
+            color: #fff;
+            border-color: #f39c12;
+            box-shadow: 0 6px 16px rgba(243, 156, 18, 0.4);
+        }
+        .chapter-grid a.locked::after {
+            content: " 🔒";
+            font-size: 0.75rem;
+            opacity: 0.7;
+        }
+        .pagination {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+        .pagination button {
+            padding: 8px 20px;
+            border: 1px solid #ddd;
+            background: #fff;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .pagination button:hover:not(:disabled) {
+            background: #3498db;
+            color: #fff;
+            border-color: #3498db;
+        }
+        .pagination button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        .pagination .page-info {
+            padding: 8px 15px;
+            background: #ecf0f1;
+            border-radius: 5px;
+            color: #2c3e50;
+        }
+        .back-home {
+            display: inline-block;
+            margin-bottom: 20px;
+            color: #3498db;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        .back-home:hover {
+            text-decoration: underline;
+        }
+        @media (max-width: 600px) {
+            .story-info-header {
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+            }
+            .story-info-header .cover {
+                width: 160px;
+                height: 210px;
+            }
+            .story-info-header .details h1 {
+                font-size: 1.5rem;
+            }
+            .story-info-header .details .meta-item strong {
+                min-width: 60px;
+            }
+            .chapter-grid {
+                grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container story-info-container">
+        <a href="../../index.html" class="back-home">⬅ Quay lại trang chủ</a>
+        <div id="story-content">
+            <p>Đang tải thông tin...</p>
+        </div>
+    </div>
+    <script>
+        const pathParts = window.location.pathname.split('/');
+        const slug = pathParts[pathParts.length - 2] || '';
+        let storyData = null;
+        let configData = null;
+        let currentPage = 1;
+        const ITEMS_PER_PAGE = 20;
+        const contentDiv = document.getElementById('story-content');
 
-# Tạo thư mục novel nếu chưa có
-os.makedirs('novel', exist_ok=True)
+        async function loadData() {
+            try {
+                const configRes = await fetch('config.json');
+                if (configRes.ok) configData = await configRes.json();
+                const dataRes = await fetch('../../data.json');
+                if (!dataRes.ok) throw new Error('Không tải được data.json');
+                const data = await dataRes.json();
+                storyData = data.truyen.find(item => item.slug === slug);
+                if (!storyData) {
+                    contentDiv.innerHTML = '<p style="color:red;">Không tìm thấy thông tin truyện.</p>';
+                    return;
+                }
+                renderStory();
+            } catch (error) {
+                console.error('Lỗi:', error);
+                contentDiv.innerHTML = '<p style="color:red;">Không thể tải thông tin truyện.</p>';
+            }
+        }
 
-# ---------- Template (giữ nguyên) ----------
-# ... (INFO_TEMPLATE, READ_TEMPLATE như cũ) ...
+        function renderStory() {
+            const { title, cover, author, genre, status, description, chapters, views } = storyData;
+            document.getElementById('story-title').textContent = title;
+            // Ảnh cover: lấy từ folder truyện, fallback về ../images/default.jpg
+            const coverPath = cover ? `./${cover}` : './cover.jpg';
+            let html = `
+                <div class="story-info-header">
+                    <img class="cover" src="${coverPath}" alt="${title}" onerror="this.src='../images/default.jpg'; this.onerror=null;">
+                    <div class="details">
+                        <h1>${title}</h1>
+                        <div class="meta-item"><strong>Tác giả:</strong> ${author || 'Đang cập nhật'}</div>
+                        <div class="meta-item"><strong>Thể loại:</strong> ${genre || 'Uncategorized'}</div>
+                        <div class="meta-item"><strong>Tình trạng:</strong> ${status || 'Đang ra'}</div>
+                        <div class="meta-item"><strong>Lượt xem:</strong> ${views ? views.toLocaleString() : 0}</div>
+                        <div class="meta-item"><strong>Số chương:</strong> ${chapters}</div>
+                    </div>
+                </div>
+            `;
+            if (description) html += `<div class="story-description">${description}</div>`;
+            html += `<div class="chapter-list"><h3>📖 DANH SÁCH CHƯƠNG</h3>`;
+            html += renderChapters(currentPage);
+            html += `</div>`;
+            contentDiv.innerHTML = html;
+        }
+
+        function renderChapters(page) {
+            const total = storyData.chapters;
+            const totalPages = Math.ceil(total / ITEMS_PER_PAGE);
+            const start = (page - 1) * ITEMS_PER_PAGE + 1;
+            const end = Math.min(page * ITEMS_PER_PAGE, total);
+            let html = `<div class="chapter-grid">`;
+            for (let i = start; i <= end; i++) {
+                const isLocked = configData && configData.chapters && configData.chapters[i] && configData.chapters[i].locked === true;
+                const lockedClass = isLocked ? 'locked' : '';
+                html += `<a href="read.html?chap=${i}" class="${lockedClass}">Chương ${i}</a>`;
+            }
+            html += `</div>`;
+            html += `<div class="pagination">`;
+            html += `<button onclick="goToPage(${page - 1})" ${page <= 1 ? 'disabled' : ''}>⬅ Trước</button>`;
+            html += `<span class="page-info">${page} / ${totalPages}</span>`;
+            html += `<button onclick="goToPage(${page + 1})" ${page >= totalPages ? 'disabled' : ''}>Sau ➡</button>`;
+            html += `</div>`;
+            return html;
+        }
+
+        function goToPage(page) {
+            const total = storyData.chapters;
+            const totalPages = Math.ceil(total / ITEMS_PER_PAGE);
+            if (page < 1 || page > totalPages) return;
+            currentPage = page;
+            renderStory();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        loadData();
+    </script>
+</body>
+</html>'''
+
+READ_TEMPLATE = '''<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>Đọc truyện</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <style>
+        .reader-container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #fff;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: relative;
+        }
+        .chapter-nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 20px 0;
+        }
+        .chapter-nav button {
+            padding: 10px 25px;
+            border: none;
+            background: #3498db;
+            color: #fff;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: background 0.2s;
+        }
+        .chapter-nav button:hover:not(:disabled) {
+            background: #2980b9;
+        }
+        .chapter-nav button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        .chapter-title {
+            font-size: 1.8rem;
+            text-align: center;
+            margin: 10px 0 20px;
+        }
+        #chapter-content {
+            min-height: 300px;
+            padding: 10px 0;
+            line-height: 1.8;
+            font-size: 1.1rem;
+        }
+        #lock-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.85);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            flex-direction: column;
+            color: white;
+            text-align: center;
+        }
+        #lock-overlay.show {
+            display: flex;
+        }
+        #lock-overlay h2 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+        }
+        #lock-overlay p {
+            font-size: 1.2rem;
+            margin-bottom: 30px;
+        }
+        .btn-aff {
+            display: inline-block;
+            background: #e67e22;
+            color: #fff;
+            padding: 15px 40px;
+            border-radius: 50px;
+            font-size: 1.3rem;
+            font-weight: bold;
+            text-decoration: none;
+            transition: background 0.2s;
+        }
+        .btn-aff:hover {
+            background: #d35400;
+        }
+        @media (max-width: 600px) {
+            .reader-container { padding: 15px; }
+            .chapter-title { font-size: 1.4rem; }
+            #chapter-content { font-size: 1rem; }
+            .chapter-nav button { padding: 8px 15px; font-size: 0.9rem; }
+        }
+        .back-info {
+            display: inline-block;
+            margin-bottom: 15px;
+            color: #3498db;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        .back-info:hover { text-decoration: underline; }
+    </style>
+</head>
+<body>
+    <div class="container reader-container">
+        <a href="info.html" class="back-info">⬅ Quay lại thông tin truyện</a>
+        <h1 class="chapter-title" id="chapter-title">Chương 1</h1>
+        <div id="chapter-content">
+            <p>Đang tải nội dung...</p>
+        </div>
+        <div class="chapter-nav">
+            <button id="prev-btn" disabled>⬅ Prev</button>
+            <span id="chap-info">1 / 13</span>
+            <button id="next-btn">Next ➡</button>
+        </div>
+    </div>
+    <div id="lock-overlay">
+        <h2>🔒 Truyện đã bị khóa</h2>
+        <p>Nhấn nút bên dưới để mở khóa và đọc tiếp</p>
+        <a href="#" id="aff-link" class="btn-aff" target="_blank">👉 Mở khóa ngay</a>
+    </div>
+    <script>
+        const urlParams = new URLSearchParams(window.location.search);
+        let currentChap = parseInt(urlParams.get('chap')) || 1;
+        let configData = null;
+        let totalChapters = 0;
+        let chaptersData = null;
+
+        const contentDiv = document.getElementById('chapter-content');
+        const titleEl = document.getElementById('chapter-title');
+        const prevBtn = document.getElementById('prev-btn');
+        const nextBtn = document.getElementById('next-btn');
+        const chapInfo = document.getElementById('chap-info');
+        const overlay = document.getElementById('lock-overlay');
+        const affLink = document.getElementById('aff-link');
+
+        async function loadAll() {
+            try {
+                const [configRes, chaptersRes] = await Promise.all([
+                    fetch('config.json'),
+                    fetch('chapters.json')
+                ]);
+                if (!configRes.ok) throw new Error('Không tải được config');
+                if (!chaptersRes.ok) throw new Error('Không tải được chapters.json');
+                configData = await configRes.json();
+                chaptersData = await chaptersRes.json();
+                totalChapters = configData.totalChapters;
+                loadChapter(currentChap);
+            } catch (err) {
+                console.error('Lỗi tải dữ liệu:', err);
+                contentDiv.innerHTML = '<p style="color:red;">Không thể tải nội dung truyện.</p>';
+            }
+        }
+
+        function loadChapter(chap) {
+            if (chap < 1) chap = 1;
+            if (chap > totalChapters) chap = totalChapters;
+            currentChap = chap;
+
+            const newUrl = window.location.pathname + '?chap=' + chap;
+            window.history.pushState({ path: newUrl }, '', newUrl);
+
+            titleEl.textContent = `Chương ${chap}`;
+            chapInfo.textContent = `${chap} / ${totalChapters}`;
+            prevBtn.disabled = (chap === 1);
+            nextBtn.disabled = (chap === totalChapters);
+
+            // Lấy nội dung từ chaptersData
+            const html = chaptersData.chapters[chap.toString()] || '<p>Chưa có nội dung.</p>';
+            contentDiv.innerHTML = html;
+            checkLock(chap);
+        }
+
+        function checkLock(chap) {
+            if (!configData) return;
+            const chapterConfig = configData.chapters[chap.toString()];
+            const isLocked = chapterConfig && chapterConfig.locked === true;
+            const aff = chapterConfig ? chapterConfig.aff_link : '';
+            if (isLocked && aff) {
+                affLink.href = aff;
+                overlay.classList.add('show');
+            } else {
+                overlay.classList.remove('show');
+            }
+        }
+
+        function unlock() { overlay.classList.remove('show'); }
+        affLink.addEventListener('click', unlock);
+
+        prevBtn.addEventListener('click', function() {
+            if (currentChap > 1) loadChapter(currentChap - 1);
+        });
+        nextBtn.addEventListener('click', function() {
+            if (currentChap < totalChapters) loadChapter(currentChap + 1);
+        });
+
+        window.addEventListener('popstate', function(e) {
+            const chap = new URLSearchParams(window.location.search).get('chap');
+            if (chap) loadChapter(parseInt(chap));
+            else loadChapter(1);
+        });
+
+        loadAll();
+    </script>
+</body>
+</html>'''
 
 # ---------- Xử lý tham số dòng lệnh ----------
-parser = argparse.ArgumentParser(description='Tạo thư mục truyện từ data.json')
+parser = argparse.ArgumentParser(description='Tạo thư mục truyện từ data.json (dùng chapters.json)')
 parser.add_argument('--full', action='store_true', help='Chạy full: tạo lại tất cả (có xác nhận)')
 args = parser.parse_args()
 
@@ -70,7 +538,7 @@ for slug in process_slugs:
         print(f"⚠️ Không tìm thấy thông tin cho slug: {slug}")
         continue
 
-    # Nếu truyện mới chưa có stt, gán stt tự động
+    # Gán STT nếu chưa có
     if 'stt' not in item or item['stt'] is None:
         item['stt'] = get_next_stt(data)
         print(f"   🆔 Gán STT {item['stt']} cho truyện '{slug}'")
@@ -79,7 +547,7 @@ for slug in process_slugs:
     folder = os.path.join('novel', slug)
     os.makedirs(folder, exist_ok=True)
 
-    # Config
+    # 1. Config
     config_path = os.path.join(folder, 'config.json')
     if not os.path.exists(config_path) or args.full:
         config = {
@@ -94,10 +562,7 @@ for slug in process_slugs:
         with open(config_path, 'w', encoding='utf-8') as f:
             json.dump(config, f, ensure_ascii=False, indent=2)
 
-    # info.html và read.html (giữ nguyên)
-    # ... (tạo info.html, read.html như cũ) ...
-
-    # chapters.json
+    # 2. chapters.json
     chapters_path = os.path.join(folder, 'chapters.json')
     if not os.path.exists(chapters_path) or args.full:
         chapters_data = {"total": total_chaps, "chapters": {}}
@@ -107,7 +572,19 @@ for slug in process_slugs:
         with open(chapters_path, 'w', encoding='utf-8') as f:
             json.dump(chapters_data, f, ensure_ascii=False, indent=2)
 
-    # Ảnh bìa
+    # 3. info.html
+    info_path = os.path.join(folder, 'info.html')
+    if not os.path.exists(info_path) or args.full:
+        with open(info_path, 'w', encoding='utf-8') as f:
+            f.write(INFO_TEMPLATE)
+
+    # 4. read.html
+    read_path = os.path.join(folder, 'read.html')
+    if not os.path.exists(read_path) or args.full:
+        with open(read_path, 'w', encoding='utf-8') as f:
+            f.write(READ_TEMPLATE)
+
+    # 5. Ảnh bìa mặc định (cover.jpg)
     create_default_cover(folder)
 
     print(f'✅ Đã xử lý xong: {slug} (STT: {item["stt"]}, {total_chaps} chương)')
@@ -118,3 +595,7 @@ with open('data.json', 'w', encoding='utf-8') as f:
 print("💾 Đã cập nhật data.json với STT mới.")
 
 print('🎉 Hoàn thành!')
+
+# ---------- Cách chạy ----------
+# Chạy bình thường: python generate_stories.py
+# Chạy full:      python generate_stories.py --full
