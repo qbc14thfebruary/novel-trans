@@ -1,301 +1,301 @@
 {
-  "truyen": [
-    {
-      "stt": 1,
-      "id": "chong-toi-la-ong-chu-cua-ban-hoc",
-      "title": "CHỐNG TỐI LÀ ỐNG CHỦ CỦA BẠN HỌC",
-      "slug": "chong-toi-la-ong-chu-cua-ban-hoc",
-      "cover": "chong-toi-la-ong-chu.jpg",
-      "views": 54096,
-      "chapters": 13,
-      "status": "Đang ra",
-      "last_update": "2025-01-20T10:00:00Z",
-      "tags": [
-        "hot"
-      ],
-      "genre": "Tiên hiệp",
-      "author": "Đang cập nhật",
-      "description": "Tôi trở thành một học sinh trong lớp đã sống lại. Bởi vì có ta luôn có thể cướp mất chính xác mọi khoảnh khắc 'tỏa sáng' của tôi. Trong đợt huấn luyện quân sự năm nhất, tôi tự bỏ tiền mua nước cho mọi người. Có ta xung phong giúp chia nước, khi nhận được lời cảm ơn của mọi người, có ta chẳng hề đỏ mặt mà nói: 'Không có gì, mọi người đều vất vả rồi, đây là việc tôi nên làm.'"
-    },
-    {
-      "stt": 2,
-      "id": "dung-dien-truoc-mat-toi-nua",
-      "title": "DỪNG DIỆN TRƯỚC MẶT TÔI NỬA",
-      "slug": "dung-dien-truoc-mat-toi-nua",
-      "cover": "dung-dien-truoc-mat.jpg",
-      "views": 53742,
-      "chapters": 13,
-      "status": "Đang ra",
-      "last_update": "2025-01-19T08:00:00Z",
-      "tags": [
-        "hot"
-      ],
-      "genre": "Ngôn tình",
-      "author": "Đang cập nhật",
-      "description": "Tôi nghỉ ngơi một nữ sinh trong lớp đã sống lại. Bởi vì có ta luôn có thể cướp mắt chính xác mọi khoảnh khắc 'tôi sáng' của tôi. Trong đợt huấn luyện quân sự năm nhất, tôi tự bỏ tiền mua nước cho mọi người. Có ta xung phong giúp chịa nước, khi nhận được lời cảm ơn của mọi người, có ta chẳng hề đò mật mà nói: 'Không có gì, mọi người đều vất vả rồi, đây là việc tôi nên làm.'"
-    },
-    {
-      "stt": 3,
-      "id": "hoa-ky-thanh-duong",
-      "title": "HỎA KỸ THANH DƯƠNG",
-      "slug": "hoa-ky-thanh-duong",
-      "cover": "hoa-ky-thanh-duong.jpg",
-      "views": 32786,
-      "chapters": 16,
-      "status": "Đang ra",
-      "last_update": "2025-01-18T15:00:00Z",
-      "tags": [
-        "hot",
-        "new"
-      ],
-      "genre": "Đô thị",
-      "author": "Đang cập nhật",
-      "description": "Một câu chuyện đầy kịch tính về hoả kỹ và thanh dương."
-    },
-    {
-      "stt": 4,
-      "id": "bi-phong-sat-5-nam-toi-dan-con-trai-tro-ve",
-      "title": "BỊ PHONG SÁT BẠ NĂM, TỐI DẪN CON TRAI TRÒ VỀ",
-      "slug": "bi-phong-sat-5-nam-toi-dan-con-trai-tro-ve",
-      "cover": "bi-phong-sat.jpg",
-      "views": 23642,
-      "chapters": 42,
-      "status": "Đang ra",
-      "last_update": "2025-01-17T20:00:00Z",
-      "tags": [
-        "hot"
-      ],
-      "genre": "Huyền huyễn",
-      "author": "Đang cập nhật",
-      "description": "Bị phong sát 5 năm, tôi dẫn con trai trò về."
-    },
-    {
-      "stt": 5,
-      "id": "bao-mau-biet-lang-nghe-tieng-long",
-      "title": "BẢO MẬU BIẾT LẠNG NGHE TIẾNG LỜNG",
-      "slug": "bao-mau-biet-lang-nghe-tieng-long",
-      "cover": "cover.jpg",
-      "views": 17924,
-      "chapters": 22,
-      "status": "Đang ra",
-      "last_update": "2025-01-16T12:00:00Z",
-      "tags": [
-        "hot"
-      ],
-      "genre": "Ngôn tình",
-      "author": "Đang cập nhật",
-      "description": "Bảo mẫu biết lắng nghe tiếng lòng."
-    },
-    {
-      "stt": 6,
-      "id": "thien-kim-thit-cua-nha-hop-pan",
-      "title": "THIÊN KIM THỊT CỦA NHÀ HỢ PĂN",
-      "slug": "thien-kim-thit-cua-nha-hop-pan",
-      "cover": "thien-kim.jpg",
-      "views": 15973,
-      "chapters": 6,
-      "status": "Đang ra",
-      "last_update": "2025-01-15T09:00:00Z",
-      "tags": [
-        "hot"
-      ],
-      "genre": "Đô thị",
-      "author": "Đang cập nhật",
-      "description": "Thiên kim thịt của nhà họ Păn."
-    },
-    {
-      "stt": 7,
-      "id": "cuc-bong-nha-hop-pho",
-      "title": "CỤC BỘNG NHÀ HỢ PHỐ",
-      "slug": "cuc-bong-nha-hop-pho",
-      "cover": "cuc-bong.jpg",
-      "views": 13910,
-      "chapters": 26,
-      "status": "Đang ra",
-      "last_update": "2025-01-14T18:00:00Z",
-      "tags": [
-        "hot"
-      ],
-      "genre": "Ngôn tình",
-      "author": "Đang cập nhật",
-      "description": "Cục bộng nhà họ Phố."
-    },
-    {
-      "stt": 8,
-      "id": "co-ay-la-chim-hoang-yen-toi-moi-la-chu-nhan-lung-son",
-      "title": "CÓ ÁY LÀ CHIM HOÀNG YẾN, TỐI MỚI LÀ CHỦ NHÂN LỚNG SƠN",
-      "slug": "co-ay-la-chim-hoang-yen",
-      "cover": "hoang-yen.jpg",
-      "views": 12780,
-      "chapters": 9,
-      "status": "Đang ra",
-      "last_update": "2025-01-13T22:00:00Z",
-      "tags": [
-        "hot"
-      ],
-      "genre": "Lịch sử",
-      "author": "Đang cập nhật",
-      "description": "Cô ấy là chim hoàng yến, tôi mới là chủ nhân của lồng sơn."
-    },
-    {
-      "stt": 9,
-      "id": "moi-ngay-toi-deu-xuong-dia-phu-bao-danh",
-      "title": "MỜI NGÀY TỐI ĐỀU XUỐNG ĐỊA PHỦ BẢO DANH",
-      "slug": "moi-ngay-toi-deu-xuong-dia-phu-bao-danh",
-      "cover": "moi-ngay.jpg",
-      "views": 12450,
-      "chapters": 7,
-      "status": "Đang ra",
-      "last_update": "2025-01-22T14:00:00Z",
-      "tags": [
-        "new",
-        "updated"
-      ],
-      "genre": "Huyền huyễn",
-      "author": "Đang cập nhật",
-      "description": "Mỗi ngày tôi đều xuống địa phủ bảo danh."
-    },
-    {
-      "stt": 10,
-      "id": "nang-la-chu-nhan-duy-nhat-cua-tram",
-      "title": "NĂNG LÀ CHỦ NHÂN DUY NHẤT CỦA TRẦM",
-      "slug": "nang-la-chu-nhan-duy-nhat-cua-tram",
-      "cover": "nang-la-chu-nhan.jpg",
-      "views": 11200,
-      "chapters": 8,
-      "status": "Đang ra",
-      "last_update": "2025-01-22T12:00:00Z",
-      "tags": [
-        "new",
-        "updated"
-      ],
-      "genre": "Ngôn tình",
-      "author": "Đang cập nhật",
-      "description": "Nàng là chủ nhân duy nhất của Trầm."
-    },
-    {
-      "stt": 11,
-      "id": "dom-tan-hon-bi-trao-phu-quon",
-      "title": "ĐỒM TẠN HỒN BỊ TRÁO PHỤ QUỐN",
-      "slug": "dom-tan-hon-bi-trao-phu-quon",
-      "cover": "dom-tan-hon.jpg",
-      "views": 9800,
-      "chapters": 8,
-      "status": "Đang ra",
-      "last_update": "2025-01-22T10:00:00Z",
-      "tags": [
-        "new",
-        "updated"
-      ],
-      "genre": "Huyền huyễn",
-      "author": "Đang cập nhật",
-      "description": "Đồm tán hồn bị tráo phụ quốc."
-    },
-    {
-      "stt": 12,
-      "id": "kim-an-quan-chua",
-      "title": "KIM ÁN QUÂN CHÚA",
-      "slug": "kim-an-quan-chua",
-      "cover": "kim-an-quan-chua.jpg",
-      "views": 8700,
-      "chapters": 22,
-      "status": "Đang ra",
-      "last_update": "2025-01-22T08:00:00Z",
-      "tags": [
-        "new",
-        "updated"
-      ],
-      "genre": "Tiên hiệp",
-      "author": "Đang cập nhật",
-      "description": "Kim án quân chúa."
-    },
-    {
-      "stt": 13,
-      "id": "uong-dung-ghi-chu-cua-ca-gia-toc",
-      "title": "UỐNG DỤNG GHI CHỦ CỦU CẢ GIA TỐC",
-      "slug": "uong-dung-ghi-chu-cua-ca-gia-toc",
-      "cover": "uong-dung.jpg",
-      "views": 7500,
-      "chapters": 9,
-      "status": "Đang ra",
-      "last_update": "2025-01-21T22:00:00Z",
-      "tags": [
-        "new",
-        "updated"
-      ],
-      "genre": "Đô thị",
-      "author": "Đang cập nhật",
-      "description": "Uống dung ghi chủ của cả gia tộc."
-    },
-    {
-      "stt": 14,
-      "id": "tham-hoa-lang-an-bam-va-nu-chu-tiem-cam-do",
-      "title": "THẢM HOA LANG ÁN BẢM VÀ NỮ CHỦ TIỆM CẢM ĐỐ",
-      "slug": "tham-hoa-lang-an-bam",
-      "cover": "tham-hoa.jpg",
-      "views": 6800,
-      "chapters": 9,
-      "status": "Đang ra",
-      "last_update": "2025-01-21T18:00:00Z",
-      "tags": [
-        "new",
-        "updated"
-      ],
-      "genre": "Ngôn tình",
-      "author": "Đang cập nhật",
-      "description": "Thảm hoa lang án bảm và nữ chủ tiệm cảm đố."
-    },
-    {
-      "stt": 15,
-      "id": "bach-long-duoi-dau-ho",
-      "title": "BẠCH LONG DƯƠI ĐẦU HỘ",
-      "slug": "bach-long-duoi-dau-ho",
-      "cover": "bach-long.jpg",
-      "views": 5900,
-      "chapters": 32,
-      "status": "Đang ra",
-      "last_update": "2025-01-21T14:00:00Z",
-      "tags": [
-        "new",
-        "updated"
-      ],
-      "genre": "Tiên hiệp",
-      "author": "Đang cập nhật",
-      "description": "Bạch long dưới đầu hộ."
-    },
-    {
-      "stt": 16,
-      "id": "khi-long-tham-tro-thanh-su-trung-phat",
-      "title": "KHI LÒNG THẠM TRỜ THÀNH SỰ TRỮNG PHÁT",
-      "slug": "khi-long-tham-tro-thanh-su-trung-phat",
-      "cover": "khi-long.jpg",
-      "views": 5200,
-      "chapters": 12,
-      "status": "Đang ra",
-      "last_update": "2025-01-21T10:00:00Z",
-      "tags": [
-        "updated"
-      ],
-      "genre": "Huyền huyễn",
-      "author": "Đang cập nhật",
-      "description": "Khi lòng tham trở thành sự trừng phạt."
-    },
-    {
-      "stt": 17,
-      "id": "sau-ly-hon-gia-chong-toi-lo-nguyen-hinh",
-      "title": "Sau Lỵ HỒN GIÀ, CHỐNG TỐI LỘ NGUYÊN HINH",
-      "slug": "sau-ly-hon-gia-chong-toi-lo-nguyen-hinh",
-      "cover": "sau-ly-hon.jpg",
-      "views": 4800,
-      "chapters": 10,
-      "status": "Đang ra",
-      "last_update": "2025-01-20T22:00:00Z",
-      "tags": [
-        "updated"
-      ],
-      "genre": "Ngôn tình",
-      "author": "Đang cập nhật",
-      "description": "Sau ly hôn, chồng tôi lộ nguyên hình."
-    }
-  ]
+    "truyen": [
+        {
+            "stt": 1,
+            "id": "chong-toi-la-ong-chu-cua-ban-hoc",
+            "title": "CHỐNG TỐI LÀ ỐNG CHỦ CỦA BẠN HỌC",
+            "slug": "chong-toi-la-ong-chu-cua-ban-hoc",
+            "cover": "chong-toi-la-ong-chu.jpg",
+            "views": 54096,
+            "chapters": 13,
+            "status": "Đang ra",
+            "last_update": "2025-01-20T10:00:00Z",
+            "tags": [
+                "hot"
+            ],
+            "genre": "Tiên hiệp",
+            "author": "Đang cập nhật",
+            "description": "Tôi trở thành một học sinh trong lớp đã sống lại. Bởi vì có ta luôn có thể cướp mất chính xác mọi khoảnh khắc 'tỏa sáng' của tôi. Trong đợt huấn luyện quân sự năm nhất, tôi tự bỏ tiền mua nước cho mọi người. Có ta xung phong giúp chia nước, khi nhận được lời cảm ơn của mọi người, có ta chẳng hề đỏ mặt mà nói: 'Không có gì, mọi người đều vất vả rồi, đây là việc tôi nên làm.'"
+        },
+        {
+            "stt": 2,
+            "id": "dung-dien-truoc-mat-toi-nua",
+            "title": "DỪNG DIỆN TRƯỚC MẶT TÔI NỬA",
+            "slug": "dung-dien-truoc-mat-toi-nua",
+            "cover": "dung-dien-truoc-mat.jpg",
+            "views": 53742,
+            "chapters": 13,
+            "status": "Đang ra",
+            "last_update": "2025-01-19T08:00:00Z",
+            "tags": [
+                "hot"
+            ],
+            "genre": "Ngôn tình",
+            "author": "Đang cập nhật",
+            "description": "Tôi nghỉ ngơi một nữ sinh trong lớp đã sống lại. Bởi vì có ta luôn có thể cướp mắt chính xác mọi khoảnh khắc 'tôi sáng' của tôi. Trong đợt huấn luyện quân sự năm nhất, tôi tự bỏ tiền mua nước cho mọi người. Có ta xung phong giúp chịa nước, khi nhận được lời cảm ơn của mọi người, có ta chẳng hề đò mật mà nói: 'Không có gì, mọi người đều vất vả rồi, đây là việc tôi nên làm.'"
+        },
+        {
+            "stt": 3,
+            "id": "hoa-ky-thanh-duong",
+            "title": "HỎA KỸ THANH DƯƠNG",
+            "slug": "hoa-ky-thanh-duong",
+            "cover": "hoa-ky-thanh-duong.jpg",
+            "views": 32786,
+            "chapters": 16,
+            "status": "Đang ra",
+            "last_update": "2025-01-18T15:00:00Z",
+            "tags": [
+                "hot",
+                "new"
+            ],
+            "genre": "Đô thị",
+            "author": "Đang cập nhật",
+            "description": "Một câu chuyện đầy kịch tính về hoả kỹ và thanh dương."
+        },
+        {
+            "stt": 4,
+            "id": "bi-phong-sat-5-nam-toi-dan-con-trai-tro-ve",
+            "title": "BỊ PHONG SÁT BẠ NĂM, TỐI DẪN CON TRAI TRÒ VỀ",
+            "slug": "bi-phong-sat-5-nam-toi-dan-con-trai-tro-ve",
+            "cover": "bi-phong-sat.jpg",
+            "views": 23642,
+            "chapters": 42,
+            "status": "Đang ra",
+            "last_update": "2025-01-17T20:00:00Z",
+            "tags": [
+                "hot"
+            ],
+            "genre": "Huyền huyễn",
+            "author": "Đang cập nhật",
+            "description": "Bị phong sát 5 năm, tôi dẫn con trai trò về."
+        },
+        {
+            "stt": 5,
+            "id": "bao-mau-biet-lang-nghe-tieng-long",
+            "title": "BẢO MẬU BIẾT LẠNG NGHE TIẾNG LỜNG",
+            "slug": "bao-mau-biet-lang-nghe-tieng-long",
+            "cover": "cover.jpg",
+            "views": 17924,
+            "chapters": 22,
+            "status": "Đang ra",
+            "last_update": "2025-01-16T12:00:00Z",
+            "tags": [
+                "hot"
+            ],
+            "genre": "Ngôn tình",
+            "author": "Đang cập nhật",
+            "description": "Bảo mẫu biết lắng nghe tiếng lòng."
+        },
+        {
+            "stt": 6,
+            "id": "thien-kim-thit-cua-nha-hop-pan",
+            "title": "THIÊN KIM THỊT CỦA NHÀ HỢ PĂN",
+            "slug": "thien-kim-thit-cua-nha-hop-pan",
+            "cover": "thien-kim.jpg",
+            "views": 15973,
+            "chapters": 6,
+            "status": "Đang ra",
+            "last_update": "2025-01-15T09:00:00Z",
+            "tags": [
+                "hot"
+            ],
+            "genre": "Đô thị",
+            "author": "Đang cập nhật",
+            "description": "Thiên kim thịt của nhà họ Păn."
+        },
+        {
+            "stt": 7,
+            "id": "cuc-bong-nha-hop-pho",
+            "title": "CỤC BỘNG NHÀ HỢ PHỐ",
+            "slug": "cuc-bong-nha-hop-pho",
+            "cover": "cuc-bong.jpg",
+            "views": 13910,
+            "chapters": 26,
+            "status": "Đang ra",
+            "last_update": "2025-01-14T18:00:00Z",
+            "tags": [
+                "hot"
+            ],
+            "genre": "Ngôn tình",
+            "author": "Đang cập nhật",
+            "description": "Cục bộng nhà họ Phố."
+        },
+        {
+            "stt": 8,
+            "id": "co-ay-la-chim-hoang-yen-toi-moi-la-chu-nhan-lung-son",
+            "title": "CÓ ÁY LÀ CHIM HOÀNG YẾN, TỐI MỚI LÀ CHỦ NHÂN LỚNG SƠN",
+            "slug": "co-ay-la-chim-hoang-yen",
+            "cover": "hoang-yen.jpg",
+            "views": 12780,
+            "chapters": 9,
+            "status": "Đang ra",
+            "last_update": "2025-01-13T22:00:00Z",
+            "tags": [
+                "hot"
+            ],
+            "genre": "Lịch sử",
+            "author": "Đang cập nhật",
+            "description": "Cô ấy là chim hoàng yến, tôi mới là chủ nhân của lồng sơn."
+        },
+        {
+            "stt": 9,
+            "id": "moi-ngay-toi-deu-xuong-dia-phu-bao-danh",
+            "title": "MỜI NGÀY TỐI ĐỀU XUỐNG ĐỊA PHỦ BẢO DANH",
+            "slug": "moi-ngay-toi-deu-xuong-dia-phu-bao-danh",
+            "cover": "moi-ngay.jpg",
+            "views": 12450,
+            "chapters": 7,
+            "status": "Đang ra",
+            "last_update": "2025-01-22T14:00:00Z",
+            "tags": [
+                "new",
+                "updated"
+            ],
+            "genre": "Huyền huyễn",
+            "author": "Đang cập nhật",
+            "description": "Mỗi ngày tôi đều xuống địa phủ bảo danh."
+        },
+        {
+            "stt": 10,
+            "id": "nang-la-chu-nhan-duy-nhat-cua-tram",
+            "title": "NĂNG LÀ CHỦ NHÂN DUY NHẤT CỦA TRẦM",
+            "slug": "nang-la-chu-nhan-duy-nhat-cua-tram",
+            "cover": "nang-la-chu-nhan.jpg",
+            "views": 11200,
+            "chapters": 8,
+            "status": "Đang ra",
+            "last_update": "2025-01-22T12:00:00Z",
+            "tags": [
+                "new",
+                "updated"
+            ],
+            "genre": "Ngôn tình",
+            "author": "Đang cập nhật",
+            "description": "Nàng là chủ nhân duy nhất của Trầm."
+        },
+        {
+            "stt": 11,
+            "id": "dom-tan-hon-bi-trao-phu-quon",
+            "title": "ĐỒM TẠN HỒN BỊ TRÁO PHỤ QUỐN",
+            "slug": "dom-tan-hon-bi-trao-phu-quon",
+            "cover": "dom-tan-hon.jpg",
+            "views": 9800,
+            "chapters": 8,
+            "status": "Đang ra",
+            "last_update": "2025-01-22T10:00:00Z",
+            "tags": [
+                "new",
+                "updated"
+            ],
+            "genre": "Huyền huyễn",
+            "author": "Đang cập nhật",
+            "description": "Đồm tán hồn bị tráo phụ quốc."
+        },
+        {
+            "stt": 12,
+            "id": "kim-an-quan-chua",
+            "title": "KIM ÁN QUÂN CHÚA",
+            "slug": "kim-an-quan-chua",
+            "cover": "kim-an-quan-chua.jpg",
+            "views": 8700,
+            "chapters": 22,
+            "status": "Đang ra",
+            "last_update": "2025-01-22T08:00:00Z",
+            "tags": [
+                "new",
+                "updated"
+            ],
+            "genre": "Tiên hiệp",
+            "author": "Đang cập nhật",
+            "description": "Kim án quân chúa."
+        },
+        {
+            "stt": 13,
+            "id": "uong-dung-ghi-chu-cua-ca-gia-toc",
+            "title": "UỐNG DỤNG GHI CHỦ CỦU CẢ GIA TỐC",
+            "slug": "uong-dung-ghi-chu-cua-ca-gia-toc",
+            "cover": "uong-dung.jpg",
+            "views": 7500,
+            "chapters": 9,
+            "status": "Đang ra",
+            "last_update": "2025-01-21T22:00:00Z",
+            "tags": [
+                "new",
+                "updated"
+            ],
+            "genre": "Đô thị",
+            "author": "Đang cập nhật",
+            "description": "Uống dung ghi chủ của cả gia tộc."
+        },
+        {
+            "stt": 14,
+            "id": "tham-hoa-lang-an-bam-va-nu-chu-tiem-cam-do",
+            "title": "THẢM HOA LANG ÁN BẢM VÀ NỮ CHỦ TIỆM CẢM ĐỐ",
+            "slug": "tham-hoa-lang-an-bam",
+            "cover": "tham-hoa.jpg",
+            "views": 6800,
+            "chapters": 9,
+            "status": "Đang ra",
+            "last_update": "2025-01-21T18:00:00Z",
+            "tags": [
+                "new",
+                "updated"
+            ],
+            "genre": "Ngôn tình",
+            "author": "Đang cập nhật",
+            "description": "Thảm hoa lang án bảm và nữ chủ tiệm cảm đố."
+        },
+        {
+            "stt": 15,
+            "id": "bach-long-duoi-dau-ho",
+            "title": "BẠCH LONG DƯƠI ĐẦU HỘ",
+            "slug": "bach-long-duoi-dau-ho",
+            "cover": "bach-long.jpg",
+            "views": 5900,
+            "chapters": 32,
+            "status": "Đang ra",
+            "last_update": "2025-01-21T14:00:00Z",
+            "tags": [
+                "new",
+                "updated"
+            ],
+            "genre": "Tiên hiệp",
+            "author": "Đang cập nhật",
+            "description": "Bạch long dưới đầu hộ."
+        },
+        {
+            "stt": 16,
+            "id": "khi-long-tham-tro-thanh-su-trung-phat",
+            "title": "KHI LÒNG THẠM TRỜ THÀNH SỰ TRỮNG PHÁT",
+            "slug": "khi-long-tham-tro-thanh-su-trung-phat",
+            "cover": "khi-long.jpg",
+            "views": 5200,
+            "chapters": 12,
+            "status": "Đang ra",
+            "last_update": "2025-01-21T10:00:00Z",
+            "tags": [
+                "updated"
+            ],
+            "genre": "Huyền huyễn",
+            "author": "Đang cập nhật",
+            "description": "Khi lòng tham trở thành sự trừng phạt."
+        },
+        {
+            "stt": 17,
+            "id": "sau-ly-hon-gia-chong-toi-lo-nguyen-hinh",
+            "title": "Sau Lỵ HỒN GIÀ, CHỐNG TỐI LỘ NGUYÊN HINH",
+            "slug": "sau-ly-hon-gia-chong-toi-lo-nguyen-hinh",
+            "cover": "sau-ly-hon.jpg",
+            "views": 4800,
+            "chapters": 10,
+            "status": "Đang ra",
+            "last_update": "2025-01-20T22:00:00Z",
+            "tags": [
+                "updated"
+            ],
+            "genre": "Ngôn tình",
+            "author": "Đang cập nhật",
+            "description": "Sau ly hôn, chồng tôi lộ nguyên hình."
+        }
+    ]
 }
